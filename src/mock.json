@@ -1,0 +1,9 @@
+{
+  "products": [
+    { "name": "Кредит 1", "amount": 50000, "interestRate": 10.5 },
+    { "name": "Кредит 2", "amount": 100000, "interestRate": 9.8 },
+    { "name": "Кредит 3", "amount": 150000, "interestRate": 8.5 },
+    { "name": "Кредит 4", "amount": 200000, "interestRate": 11.2 },
+    { "name": "Кредит 5", "amount": 300000, "interestRate": 7.5 }
+  ]
+}
