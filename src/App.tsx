@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import Filter from './components/Filter';
 import Sort from './components/Sort';
 import CreditProduct from './components/CreditProduct';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import mockData from './mock.json';
 
-const App: React.FC = () => {
+const App = () => {
   const [products, setProducts] = useState([]); // Все продукты
   const [filteredProducts, setFilteredProducts] = useState([]); // Отфильтрованные продукты
-  const [minAmount, setMinAmount] = useState<number | null>(null);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | null>(null);
+  const [minAmount, setMinAmount] = useState(null);
+  const [sortOrder, setSortOrder] = useState(null);
   
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // Инициализация данных из mock.json и параметров из URL/LocalStorage
   useEffect(() => {
@@ -31,11 +31,11 @@ const App: React.FC = () => {
     }
 
     if (savedMinAmount) setMinAmount(Number(savedMinAmount));
-    if (savedOrder) setSortOrder(savedOrder as 'asc' | 'desc');
+    if (savedOrder) setSortOrder(savedOrder);
   }, [location.search]);
 
   // Обработчик фильтрации
-  const handleFilter = (minAmount: number) => {
+  const handleFilter = (minAmount) => {
     setMinAmount(minAmount);
     const filtered = products.filter(product => product.amount >= minAmount);
     setFilteredProducts(filtered);
@@ -45,7 +45,7 @@ const App: React.FC = () => {
   };
 
   // Обработчик сортировки
-  const handleSort = (order: 'asc' | 'desc') => {
+  const handleSort = (order) => {
     setSortOrder(order);
     const sorted = [...filteredProducts].sort((a, b) =>
       order === 'asc' ? a.amount - b.amount : b.amount - a.amount
@@ -57,24 +57,26 @@ const App: React.FC = () => {
   };
 
   // Функция обновления URL с параметрами
-  const updateURL = (minAmount: number | null, order: 'asc' | 'desc' | null) => {
+  const updateURL = (minAmount, order) => {
     const params = new URLSearchParams();
     if (minAmount !== null) params.set('minAmount', String(minAmount));
     if (order !== null) params.set('order', order);
-    history.push({ search: params.toString() });
+    navigate(`?${params.toString()}`);
   };
 
   // Сохранение отфильтрованных продуктов в localStorage
-  const saveProducts = (products: any[]) => {
+  const saveProducts = (products) => {
     localStorage.setItem('savedProducts', JSON.stringify(products));
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Кредитные продукты</h1>
-      <Filter onFilter={handleFilter} initialMinAmount={minAmount} />
-      <Sort onSort={handleSort} initialOrder={sortOrder} />
-      <div>
+      <div className="filters">
+        <Filter onFilter={handleFilter} initialMinAmount={minAmount} />
+        <Sort onSort={handleSort} initialOrder={sortOrder} />
+      </div>
+      <div className="products">
         {filteredProducts.map((product, index) => (
           <CreditProduct key={index} {...product} />
         ))}
