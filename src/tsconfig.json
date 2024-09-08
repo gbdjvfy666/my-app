@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es6",                          // Версия JavaScript
+    "module": "commonjs",                      // Система модулей
+    "jsx": "react",                            // Поддержка JSX
+    "outDir": "./dist",                        // Папка, куда будут скомпилированы файлы
+    "rootDir": "./src",                        // Исходная папка для tsx файлов
+    "strict": true,                            // Строгая типизация
+    "esModuleInterop": true                    // Интероп с модулями ES
+  },
+  "include": ["src/**/*"],                     // Папка с TypeScript файлами
+  "exclude": ["node_modules", "**/*.test.tsx"] // Исключить тесты и библиотеки
+}
